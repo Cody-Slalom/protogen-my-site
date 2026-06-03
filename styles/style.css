@@ -1,16 +1,16 @@
 :root {
   color-scheme: dark;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #070815;
-  color: #f4f5f8;
-  line-height: 1.6;
+  background: #1f1a12;
+  color: #f8f1e4;
+  line-height: 1.7;
   font-size: 1rem;
-  --surface: rgba(11, 14, 31, 0.84);
-  --surface-soft: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.08);
-  --text-muted: #aab0c2;
-  --accent: #8f8dff;
-  --accent-strong: #ffd277;
+  --surface: rgba(20, 17, 12, 0.82);
+  --surface-soft: rgba(248, 241, 228, 0.08);
+  --border: rgba(248, 241, 228, 0.16);
+  --text-muted: #d7c8ae;
+  --accent: #d3a15d;
+  --accent-deep: #6d4b2f;
 }
 
 * {
@@ -24,19 +24,18 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, rgba(143, 141, 255, 0.18), transparent 20%),
-    radial-gradient(circle at 85% 10%, rgba(255, 210, 119, 0.14), transparent 15%),
-    radial-gradient(circle at 65% 85%, rgba(66, 203, 255, 0.14), transparent 14%),
-    #070815;
+  background: radial-gradient(circle at top left, rgba(211, 161, 93, 0.16), transparent 20%),
+    radial-gradient(circle at 90% 15%, rgba(120, 97, 63, 0.12), transparent 16%),
+    linear-gradient(180deg, #231f18 0%, #1f1a12 38%, #15120c 100%);
 }
 
-body::after {
+body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.06), transparent 10%),
-    radial-gradient(circle at 82% 82%, rgba(143, 141, 255, 0.08), transparent 12%);
+  background: radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.04), transparent 9%),
+    radial-gradient(circle at 80% 80%, rgba(209, 161, 93, 0.08), transparent 11%);
 }
 
 img {
@@ -74,14 +73,14 @@ a {
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8f8dff, #ffd277);
-  box-shadow: 0 0 0 4px rgba(143, 141, 255, 0.12);
+  background: radial-gradient(circle, #d3a15d 0%, #70492b 85%);
+  box-shadow: 0 0 0 4px rgba(211, 161, 93, 0.18);
 }
 
 .eyebrow {
   margin: 0;
   color: var(--accent);
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   font-size: 0.82rem;
 }
@@ -108,11 +107,11 @@ a {
 }
 
 .card {
-  background: var(--surface);
+  background: rgba(10, 9, 6, 0.92);
   border: 1px solid var(--border);
-  border-radius: 32px;
-  backdrop-filter: blur(18px);
-  box-shadow: 0 32px 90px rgba(3, 12, 40, 0.32);
+  border-radius: 28px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 80px rgba(2, 2, 1, 0.42);
   padding: 2rem;
 }
 
@@ -125,17 +124,18 @@ a {
 
 .hero-copy h1 {
   margin: 0;
-  font-size: clamp(2.8rem, 5vw, 4.4rem);
-  letter-spacing: -0.04em;
-  line-height: 1.02;
-  max-width: 13ch;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+  max-width: 12ch;
 }
 
 .hero-text {
-  margin: 1.75rem 0 0;
-  max-width: 62ch;
+  margin: 1.5rem 0 0;
+  max-width: 60ch;
   color: var(--text-muted);
-  font-size: 1.03rem;
+  font-size: 1rem;
 }
 
 .hero-actions {
@@ -156,15 +156,15 @@ a {
 }
 
 .button.primary {
-  color: #070815;
-  background: linear-gradient(135deg, #ffd277, #8f8dff);
-  box-shadow: 0 20px 40px rgba(143, 141, 255, 0.22);
+  color: #1f1a12;
+  background: linear-gradient(135deg, #d3a15d, #a07038);
+  box-shadow: 0 18px 28px rgba(211, 161, 93, 0.3);
 }
 
 .button.secondary {
-  color: #f4f5f8;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f8f1e4;
+  background: rgba(248, 241, 228, 0.08);
+  border: 1px solid rgba(248, 241, 228, 0.16);
 }
 
 .button:hover {
@@ -175,9 +175,9 @@ a {
   position: relative;
   min-height: 420px;
   overflow: hidden;
-  border-radius: 32px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(84, 85, 121, 0.14));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(248, 241, 228, 0.08), rgba(22, 17, 10, 0.72));
+  border: 1px solid rgba(248, 241, 228, 0.12);
 }
 
 .hero-visual::before {
@@ -185,7 +185,8 @@ a {
   position: absolute;
   inset: 0;
   background: url("../assets/flow.svg") center/cover no-repeat;
-  opacity: 0.55;
+  opacity: 0.35;
+  filter: sepia(0.35) saturate(1.2) brightness(0.95);
   pointer-events: none;
 }
 
@@ -209,11 +210,11 @@ a {
 
 .visual-card {
   padding: 1.6rem;
-  border-radius: 24px;
-  background: rgba(7, 8, 21, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 18px 50px rgba(5, 8, 28, 0.22);
+  border-radius: 22px;
+  background: rgba(31, 26, 18, 0.92);
+  border: 1px solid rgba(248, 241, 228, 0.12);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 38px rgba(2, 2, 1, 0.3);
 }
 
 .visual-card span {
@@ -245,7 +246,8 @@ a {
 
 .section-intro h2 {
   margin: 0;
-  font-size: clamp(1.9rem, 2.4vw, 2.6rem);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.9rem, 2.4vw, 2.5rem);
   line-height: 1.05;
 }
 
@@ -265,9 +267,9 @@ a {
 .process-step,
 .contact-details {
   padding: 1.8rem;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  background: rgba(248, 241, 228, 0.06);
+  border: 1px solid rgba(248, 241, 228, 0.12);
 }
 
 .focus-item strong,
@@ -275,6 +277,7 @@ a {
   display: block;
   margin-bottom: 0.85rem;
   font-size: 1.05rem;
+  color: #f8f1e4;
 }
 
 .focus-item p,
