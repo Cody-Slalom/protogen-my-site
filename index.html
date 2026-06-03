@@ -247,18 +247,18 @@
       statusEl.textContent = `Wind ${Math.round(windspeed)} mph · ${timezone}`;
     }
 
-    function showError(message) {
+    function showError(message, locationText = 'Unable to determine location.') {
       const descEl = document.getElementById('weather-description');
       const statusEl = document.getElementById('weather-status');
       const locationEl = document.getElementById('weather-location');
       descEl.textContent = 'Weather unavailable';
       statusEl.textContent = message;
-      locationEl.textContent = 'Unable to determine location.';
+      locationEl.textContent = locationText;
     }
 
-    function fetchWeather(lat, lon) {
+    function fetchWeather(lat, lon, locationText = '') {
       const locationEl = document.getElementById('weather-location');
-      locationEl.textContent = `Latitude ${lat.toFixed(2)}, Longitude ${lon.toFixed(2)}`;
+      locationEl.textContent = locationText || `Latitude ${lat.toFixed(2)}, Longitude ${lon.toFixed(2)}`;
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=auto`;
       fetch(url)
         .then((response) => {
@@ -274,8 +274,29 @@
             timezone: data.timezone || 'Local time',
           });
         })
-        .catch(() => {
-          showError('Unable to fetch weather from Open-Meteo.');
+        .catch((error) => {
+          console.error('Weather fetch error:', error);
+          showError('Unable to fetch weather from Open-Meteo.', locationText || 'Unable to determine location.');
+        });
+    }
+
+    function fetchLocationByIp() {
+      const locationEl = document.getElementById('weather-location');
+      const statusEl = document.getElementById('weather-status');
+      statusEl.textContent = 'Looking up location from IP…';
+      fetch('https://ipapi.co/json/')
+        .then((response) => {
+          if (!response.ok) throw new Error('IP lookup failed');
+          return response.json();
+        })
+        .then((data) => {
+          if (!data.latitude || !data.longitude) throw new Error('IP location missing');
+          const locationText = data.city && data.region ? `${data.city}, ${data.region}` : `Approximate location`;
+          fetchWeather(data.latitude, data.longitude, locationText);
+        })
+        .catch((error) => {
+          console.error('IP lookup error:', error);
+          showError('Unable to determine location from IP.');
         });
     }
 
@@ -288,14 +309,15 @@
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          fetchWeather(latitude, longitude);
+          fetchWeather(latitude, longitude, 'Your location');
         },
         (error) => {
           if (error.code === error.PERMISSION_DENIED) {
-            showError('Enable location to see your weather.');
+            showError('Enable location to see your weather.', 'Location access denied.');
           } else {
-            showError('Unable to retrieve location.');
+            showError('Unable to retrieve location.', 'Location retrieval failed.');
           }
+          fetchLocationByIp();
         },
         { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 }
       );
