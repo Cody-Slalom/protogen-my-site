@@ -34,8 +34,10 @@
       opacity: 0.96;
       align-self: start;
       justify-self: end;
-      background: rgba(248, 241, 228, 0.06);
-      border-color: rgba(248, 241, 228, 0.12);
+      background: rgba(31, 26, 18, 0.92);
+      border: 1px solid rgba(248, 241, 228, 0.12);
+      padding: 1.6rem;
+      box-shadow: 0 14px 38px rgba(2, 2, 1, 0.3);
     }
 
     .weather-header {
@@ -290,7 +292,7 @@
         },
         (error) => {
           if (error.code === error.PERMISSION_DENIED) {
-            showError('Location permission denied.');
+            showError('Enable location to see your weather.');
           } else {
             showError('Unable to retrieve location.');
           }
