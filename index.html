@@ -24,6 +24,20 @@
       gap: 1rem;
     }
 
+    .hero-visual {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .hero-weather {
+      max-width: 360px;
+      opacity: 0.96;
+      align-self: start;
+      justify-self: end;
+      background: rgba(248, 241, 228, 0.06);
+      border-color: rgba(248, 241, 228, 0.12);
+    }
+
     .weather-header {
       display: flex;
       align-items: center;
@@ -126,6 +140,19 @@
             <strong>Journeys that feel natural.</strong>
           </div>
         </div>
+        <div class="weather-card hero-weather" id="weather-widget">
+          <div class="weather-header">
+            <div>
+              <p class="weather-label">Current weather</p>
+              <p class="weather-conditions" id="weather-description">Loading weather…</p>
+            </div>
+            <div class="weather-temperature" id="weather-temp">--°F</div>
+          </div>
+          <div class="weather-meta">
+            <p id="weather-location">Detecting location…</p>
+            <p class="weather-loading" id="weather-status">Allow location access to show local weather.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -147,20 +174,6 @@
           <strong>User experience</strong>
           <p>Research-informed interaction design that supports confident and comfortable decisions.</p>
         </div>
-      </div>
-    </section>
-
-    <section class="weather-card" id="weather-widget">
-      <div class="weather-header">
-        <div>
-          <p class="weather-label">Current weather</p>
-          <p class="weather-conditions" id="weather-description">Loading weather…</p>
-        </div>
-        <div class="weather-temperature" id="weather-temp">--°F</div>
-      </div>
-      <div class="weather-meta">
-        <p id="weather-location">Detecting location…</p>
-        <p class="weather-loading" id="weather-status">Allow location access to show local weather.</p>
       </div>
     </section>
 
