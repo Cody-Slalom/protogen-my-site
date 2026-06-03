@@ -1,0 +1,10 @@
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradientA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8F8DFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#FFD277" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+  <path d="M0 180C120 100 220 40 380 40C540 40 610 170 720 200C780 218 840 152 800 300C760 448 600 520 470 600C340 680 220 760 100 720C20 700 0 540 0 420V180Z" fill="url(#gradientA)"/>
+  <path d="M0 550C120 520 220 620 360 640C500 660 620 580 700 540C760 510 840 560 800 660C760 760 620 780 520 760C420 740 330 700 220 700C120 700 0 620 0 550Z" fill="#47D7FF" fill-opacity="0.18"/>
+</svg>
