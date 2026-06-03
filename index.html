@@ -12,6 +12,71 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Aleo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css" />
+  <style>
+    .weather-card {
+      background: rgba(248, 241, 228, 0.08);
+      border: 1px solid rgba(248, 241, 228, 0.16);
+      color: #f8f1e4;
+      padding: 1.75rem;
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(2, 2, 1, 0.28);
+      display: grid;
+      gap: 1rem;
+    }
+
+    .weather-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .weather-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      font-size: 0.78rem;
+    }
+
+    .weather-status {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .weather-temperature {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .weather-conditions {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      margin: 0;
+    }
+
+    .weather-meta {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .weather-meta p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .weather-loading {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
 <body>
   <main class="page-shell">
@@ -85,6 +150,20 @@
       </div>
     </section>
 
+    <section class="weather-card" id="weather-widget">
+      <div class="weather-header">
+        <div>
+          <p class="weather-label">Current weather</p>
+          <p class="weather-conditions" id="weather-description">Loading weather…</p>
+        </div>
+        <div class="weather-temperature" id="weather-temp">--°F</div>
+      </div>
+      <div class="weather-meta">
+        <p id="weather-location">Detecting location…</p>
+        <p class="weather-loading" id="weather-status">Allow location access to show local weather.</p>
+      </div>
+    </section>
+
     <section class="card work-list" id="projects">
       <div class="section-intro">
         <p class="eyebrow">Projects</p>
@@ -132,5 +211,80 @@
       <p>Designed in plain HTML and expressive CSS to showcase a modern, elegant design presence.</p>
     </footer>
   </main>
+  <script>
+    function getWeatherEmoji(code, windspeed) {
+      if (code === 0) return '☀️ Sunny';
+      if ([1, 2, 3].includes(code)) return '⛅ Partly cloudy';
+      if ([45, 48].includes(code)) return '🌫️ Fog';
+      if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return '🌧️ Rain';
+      if ([56, 57, 66, 67, 71, 73, 75, 77, 85, 86].includes(code)) return '❄️ Snow';
+      if ([95, 96, 99].includes(code)) return '⛈️ Storm';
+      if (windspeed >= 22) return '🌬️ Windy';
+      return '☁️ Cloudy';
+    }
+
+    function showWeather({ temperature, weathercode, windspeed, timezone }) {
+      const tempEl = document.getElementById('weather-temp');
+      const descEl = document.getElementById('weather-description');
+      const statusEl = document.getElementById('weather-status');
+      tempEl.textContent = `${Math.round(temperature)}°F`;
+      descEl.textContent = getWeatherEmoji(weathercode, windspeed);
+      statusEl.textContent = `Wind ${Math.round(windspeed)} mph · ${timezone}`;
+    }
+
+    function showError(message) {
+      const descEl = document.getElementById('weather-description');
+      const statusEl = document.getElementById('weather-status');
+      const locationEl = document.getElementById('weather-location');
+      descEl.textContent = 'Weather unavailable';
+      statusEl.textContent = message;
+      locationEl.textContent = 'Unable to determine location.';
+    }
+
+    function fetchWeather(lat, lon) {
+      const locationEl = document.getElementById('weather-location');
+      locationEl.textContent = `Latitude ${lat.toFixed(2)}, Longitude ${lon.toFixed(2)}`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=auto`;
+      fetch(url)
+        .then((response) => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then((data) => {
+          if (!data.current_weather) throw new Error('Weather data missing');
+          showWeather({
+            temperature: data.current_weather.temperature,
+            weathercode: data.current_weather.weathercode,
+            windspeed: data.current_weather.windspeed,
+            timezone: data.timezone || 'Local time',
+          });
+        })
+        .catch(() => {
+          showError('Unable to fetch weather from Open-Meteo.');
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!navigator.geolocation) {
+        showError('Geolocation is not available in this browser.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchWeather(latitude, longitude);
+        },
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            showError('Location permission denied.');
+          } else {
+            showError('Unable to retrieve location.');
+          }
+        },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 }
+      );
+    });
+  </script>
 </body>
 </html>
